@@ -97,10 +97,16 @@ def process_audio(
     padded_audio.export(output_file, format="wav")
 
 
-for i in glob.glob("dataset/max/*.wav"):
-    print(f"Processing {i}...")
-    output_file = i.replace("dataset/max", "dataset/max_central")
-    target_length_samples = 16000  # 目标采样点数为16000
-    sample_rate = 16000  # 采样率为16000 Hz
+# for i in glob.glob("dataset/max/*.wav"):
+#     print(f"Processing {i}...")
+#     output_file = i.replace("dataset/max", "dataset/max_central")
+#     target_length_samples = 16000  # 目标采样点数为16000
+#     sample_rate = 16000  # 采样率为16000 Hz
 
-    process_audio(i, output_file, target_length_samples, sample_rate)
+#     process_audio(i, output_file, target_length_samples, sample_rate)
+
+input_file = "trigger_example/4_16khz.wav"
+output_file = "trigger_example/4_16khz_central.wav"
+target_length_samples = 16000  # 目标采样点数为16000
+sample_rate = 16000  # 采样率为16000 Hz
+process_audio(input_file, output_file, target_length_samples, sample_rate)

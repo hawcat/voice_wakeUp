@@ -164,3 +164,6 @@ dataset/
 mini_speech_commands/
 speech_commands_v0.02/
 trigger_example/
+logs/
+testing/
+testing_result/

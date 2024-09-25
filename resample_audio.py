@@ -49,4 +49,4 @@ def resample_audio_to_16k_in_folder(folder_path, target_sample_rate=16000):
 
 if __name__ == "__main__":
     # resample_audio_to_16k_in_folder("mini_speech_commands/heymax")
-    resample_audio_to_16k_in_folder("trigger_example/max.wav")
+    resample_audio_to_16k_in_folder("trigger_example/4.wav")

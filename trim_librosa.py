@@ -24,25 +24,32 @@ def process_audio(input_path, output_path, target_duration, silence_thresh=-20):
     if len(non_silent_audio) >= target_length:
         # 如果非静音片段大于或等于目标长度，则裁剪到目标长度
         trimmed_audio = non_silent_audio[:target_length]
+        sf.write(output_path, trimmed_audio, sr)
     else:
         # 需要填充的静音长度
         silence_padding = target_length - len(non_silent_audio)
         pad_left = silence_padding // 2
         pad_right = silence_padding - pad_left
 
-        # 在音频两侧填充静音
+        trimmed_audio = np.pad(non_silent_audio, (0, silence_padding), mode="constant")
+        output_path = output_path.replace(".wav", "_left.wav")
+        sf.write(output_path, trimmed_audio, sr)
+        trimmed_audio = np.pad(non_silent_audio, (silence_padding, 0), mode="constant")
+        output_path = output_path.replace("_left.wav", "_right.wav")
+        sf.write(output_path, trimmed_audio, sr)
         trimmed_audio = np.pad(non_silent_audio, (pad_left, pad_right), mode="constant")
+        output_path = output_path.replace("_right.wav", "_central.wav")
+        sf.write(output_path, trimmed_audio, sr)
 
-    # 6. 将处理后的音频保存到输出路径
-    sf.write(output_path, trimmed_audio, sr)
 
+for i in glob.glob("speech_commands_v0.02/max/*.wav"):
+    print(f"Processing {i}...")
+    output_file = i.replace(
+        "speech_commands_v0.02/max", "speech_commands_v0.02/max_trimed"
+    )
 
-# for i in glob.glob("dataset/max/*.wav"):
-#     print(f"Processing {i}...")
-#     output_file = i.replace("dataset/max", "dataset/max_central")
+    process_audio(i, output_file, 1.0)
 
-#     process_audio(i, output_file, 1.0)
-
-inputfile = "trigger_example/max_16khz.wav"
-outputfile = "trigger_example/max_16khz_central.wav"
-process_audio(inputfile, outputfile, 1.0)
+# inputfile = "trigger_example/4_16khz.wav"
+# outputfile = "trigger_example/4_16khz_central.wav"
+# process_audio(inputfile, outputfile, 1.0)
